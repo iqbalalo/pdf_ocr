@@ -60,22 +60,13 @@ def submit_pdf():
 
 
 def convert_pdf_to_image(pdf):
-    files = {"file": open(pdf, 'rb')}
-    headers = {
-        'Accept': "application/pdf",
-        'Content-Type': "multipart/form-data",
-        'Cache-Control': "no-cache"
-    }
-
+    file = {'file': open(basedir + "/" + pdf, 'rb')}
     url = "https://api-sandbox.fastaccounting.jp/v1.3/convert_to_jpg"
 
-    result = requests.post(url, files=files, headers=headers)
-    print(result.json())
+    result = requests.post(url, files=file)
+    result = result.json()
 
-    if result and result["result"] == "SUCCESS":
-        return result["data"]
-
-    return None
+    return result.get("data", None)
 
 
 def base64_to_image(img_str):

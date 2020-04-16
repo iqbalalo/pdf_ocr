@@ -9,4 +9,4 @@ file = {'file': open(basedir + "/testdata.pdf", 'rb')}
 
 result = requests.post(url, files=file)
 result = result.json()
-print(result["data"]["lid"])
+print(result.get("data", None)["lid"])
