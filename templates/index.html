@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF OCR Reader</title>
+</head>
+<body>
+<h3>Upload PDF to read the result</h3>
+<form id="upload-file" method="post" enctype="multipart/form-data" action="{{ url_for('submit_pdf') }}">
+    <div style="background: #dddddd; border-radius: 8px; padding: 2em; margin-bottom: 1em;">
+        <input name="pdf" type="file" class="form-control-file" accept="application/pdf" required>
+    </div>
+    <input type="hidden" value="0123456789">
+    <input type="submit" value="Upload PDF">
+</form>
+<h4>Result</h4>
+<div style="margin-top: 1em; margin-bottom: 2em; border: .5px solid; padding: 1em;">
+    {{ocr_result}}
+</div>
+
+<h4>History</h4>
+<div style="margin-top: 1em; border: .5px solid; padding: 1em;">
+    {% for h in history %}
+        {{h}}
+    {% endfor %}
+</div>
+</body>
+</html>
