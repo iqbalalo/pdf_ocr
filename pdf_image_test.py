@@ -1,6 +1,9 @@
 import requests
+import os
 
-files = {"file": open("testdata.pdf", 'rb')}
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+files = {"file": open(basedir + "/testdata.pdf", 'rb')}
 headers = {
     'Accept': "application/pdf",
     'Content-Type': "multipart/form-data",
