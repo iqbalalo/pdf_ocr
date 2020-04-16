@@ -1,11 +1,14 @@
 import requests
 import os
+import base64
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-# pdf = open(basedir + "/testdata.pdf", 'rb')
-# pdf_binary = pdf.read()
-files = {"file": basedir + "/testdata.pdf"}
+
+with open(basedir + "/testdata.pdf", "rb") as pdf_file:
+    encoded_string = base64.b64encode(pdf_file.read())
+
+files = {"file": encoded_string}
 headers = {
     'Content-Type': "multipart/form-data"
 }
