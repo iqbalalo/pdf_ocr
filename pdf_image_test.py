@@ -22,7 +22,9 @@ file = {'file': open(basedir + "/testdata.pdf", 'rb')}
 
 result = requests.post(url, files=file)
 result = result.json()
-img_file = base64_to_image(result.get("data", None)["image"][0])
+img_data = result.get("data", None)["image"][0]
+print("image data type", type(img_data))
+img_file = base64_to_image(img_data)
 
 file = {"file": open(basedir + "/" + img_file, 'rb')}
 # header = {'Content-Type': 'application/x-www-form-urlencoded'}
