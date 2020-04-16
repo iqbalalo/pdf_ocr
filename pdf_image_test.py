@@ -6,7 +6,7 @@ import base64
 def base64_to_image(img_str):
     img_str += "=" * ((4 - len(img_str) % 4) % 4)
     img_data = base64.b64decode(img_str)
-    filename = 'test.jpg'
+    filename = 'test.jpeg'
     with open(filename, 'wb') as f:
         f.write(img_data)
     return filename
