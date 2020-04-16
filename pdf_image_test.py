@@ -3,7 +3,7 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-files = {"file": open(basedir + "/testdata.pdf", 'rb')}
+files = {"file": open(basedir + "/testdata.pdf", 'rb').read()}
 headers = {
     'Accept': "application/pdf",
     'Content-Type': "multipart/form-data",
