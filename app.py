@@ -30,7 +30,7 @@ def submit_pdf():
     global ocr_result
     request.files["pdf"].save(basedir + "/test.pdf")
 
-    result = convert_pdf_to_image("test.pdf")
+    result = convert_pdf_to_image(basedir + "/test.pdf")
 
     if result is None:
         ocr_result = "Invalid PDF!"
