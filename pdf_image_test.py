@@ -1,18 +1,14 @@
 import requests
 import os
 import base64
-from io import BytesIO
 import imghdr
-from PIL import Image
 
 def base64_to_image(img_str):
     img_str += "=" * ((4 - len(img_str) % 4) % 4)
     img_data = base64.b64decode(img_str)
-    img_data = BytesIO(img_data)
-    img = Image.open(img_data)
-    img.save('test.jpeg', "JPEG")
+    with open("test.jpeg", "wb") as fh:
+        fh.write(base64.decodebytes(img_data))
     return "test.jpeg"
-
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
