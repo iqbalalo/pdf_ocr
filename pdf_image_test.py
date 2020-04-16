@@ -19,5 +19,10 @@ file = {'file': open(basedir + "/testdata.pdf", 'rb')}
 
 result = requests.post(url, files=file)
 result = result.json()
-print(result.get("data", None)["image"])
-base64_to_image(result.get("data", None)["image"][0])
+img_file = base64_to_image(result.get("data", None)["image"][0])
+
+file = {"file": open(basedir + "/" + img_file, 'rb')}
+url = "https://api-sandbox.fastaccounting.jp/v1.3/receipt"
+
+result = requests.post(url, files=file)
+print(result.json())
