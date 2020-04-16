@@ -4,7 +4,6 @@ import base64
 import imghdr
 
 def base64_to_image(img_str):
-    img_str += "=" * ((4 - len(img_str) % 4) % 4)
     img_data = base64.urlsafe_b64decode(img_str)
     print(img_data)
     with open("test.jpeg", "wb") as fh:
