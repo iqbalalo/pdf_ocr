@@ -4,7 +4,7 @@ import base64
 
 
 def base64_to_image(img_str):
-    img_data = base64.b64decode(img_str)
+    img_data = base64.urlsafe_b64decode(img_str)
     filename = 'test.jpg'
     with open(filename, 'wb') as f:
         f.write(img_data)
