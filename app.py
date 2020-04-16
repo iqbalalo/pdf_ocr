@@ -69,31 +69,23 @@ def convert_pdf_to_image(pdf):
     return result.get("data", None)
 
 
-def base64_to_image(img_str):
-    img_str += "=" * ((4 - len(img_str) % 4) % 4)
-    img_data = base64.b64decode(img_str)
-    filename = 'test.jpg'
-    with open(filename, 'wb') as f:
-        f.write(img_data)
-    return filename
+def base64_to_image(img_data):
+    img_data = img_data.split(",")[1]
+    img_data = bytes(img_data, 'utf-8')
+    with open("test.jpeg", "wb") as fh:
+        fh.write(base64.decodebytes(img_data))
+
+    return "test.jpeg"
 
 
 def image_to_ocr(image):
-    files = {"file": open(image, 'rb')}
-    headers = {
-        'Accept': "application/pdf",
-        'Content-Type': "multipart/form-data",
-        'Cache-Control': "no-cache"
-    }
+    file = {"file": open(basedir + "/" + image, 'rb')}
     url = "https://api-sandbox.fastaccounting.jp/v1.3/receipt"
 
-    result = requests.post(url, files=files, headers=headers)
+    result = requests.post(url, files=file)
     print(result.json())
 
-    if result and result["result"] == "SUCCESS":
-        return result["data"]
-
-    return None
+    return result
 
 
 if __name__ == "__main__":

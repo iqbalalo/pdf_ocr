@@ -4,7 +4,6 @@ import base64
 import imghdr
 
 def base64_to_image(img_data):
-    # img_data = img_data.decode("utf-8")
     img_data = img_data.split(",")[1]
     img_data = bytes(img_data, 'utf-8')
     with open("test.jpeg", "wb") as fh:
@@ -27,7 +26,6 @@ print("image data type", type(img_data))
 img_file = base64_to_image(img_data)
 
 file = {"file": open(basedir + "/" + img_file, 'rb')}
-# header = {'Content-Type': 'application/x-www-form-urlencoded'}
 url = "https://api-sandbox.fastaccounting.jp/v1.3/receipt"
 
 result = requests.post(url, files=file)
