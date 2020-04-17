@@ -53,7 +53,7 @@ def submit_pdf():
     res = db.create_history(lid=lid, parent_id=parent_id, result=result)
 
     if res:
-        flash("lid: " + lid + "  parent_id: " + parent_id + "  " + result)
+        flash("lid: " + lid + "\n parent_id: " + parent_id + "\n  " + result)
     else:
         flash("OCR Data could not saved!")
 
