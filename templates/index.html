@@ -25,7 +25,12 @@
 <h4>History</h4>
 <div style="margin-top: 1em; border: .5px solid; padding: 1em;">
     {% for h in history %}
-        {{h}}
+        <div style="background: #dddddd; margin-bottom: .5em; padding: .5em">
+         lid: {{h.lid}}<br/>
+         parent_id: {{ h.parent_id }}<br/>
+         result: <br/> {{ h.result }}
+        </div>
+
     {% endfor %}
 </div>
 </body>

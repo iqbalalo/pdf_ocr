@@ -4,6 +4,7 @@ from flask_cors import CORS
 from dao import DAO
 import requests
 import base64
+import json
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -18,6 +19,7 @@ db = DAO()
 def index():
     # load history
     history = db.get_history()
+
     return render_template("index.html", history=history)
 
 
@@ -82,11 +84,15 @@ def image_to_ocr(image):
     url = "https://api-sandbox.fastaccounting.jp/v1.3/receipt"
 
     result = requests.post(url, files=file)
-    print(result.json())
+    result = result.json()
 
-    return result
+    print(result)
+
+    text = ""
+    for i in result.json().keys():
+        text += "{}: {}\n".format(i, result[i])
+    return text
 
 
 if __name__ == "__main__":
-    os.environ["FLASK_ENV"] = "development"
-    app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)
+    app.run(host='0.0.0.0', port=80)
