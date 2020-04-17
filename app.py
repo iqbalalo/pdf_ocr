@@ -45,8 +45,8 @@ def submit_pdf():
     if img is not None and os.path.exists(img):
         result = image_to_ocr(img)
 
-    if "error" in result or not result:
-        flash(result)
+    if not result:
+        flash("Error: OCR data could not fetched!")
         return redirect(url_for("index"))
 
     # save to db
@@ -86,7 +86,14 @@ def image_to_ocr(image):
     result = requests.post(url, files=file)
     result = result.json()
 
-    return result
+    if "error" in result:
+        return None
+
+    text = ""
+    for i in result.keys():
+        text += "{}:{}  ".format(i, result[i])
+
+    return text
 
 
 if __name__ == "__main__":
