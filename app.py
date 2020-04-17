@@ -86,12 +86,8 @@ def image_to_ocr(image):
     result = requests.post(url, files=file)
     result = result.json()
     result = json.dumps(result).encode("utf8")
-    result = json.loads(result)
-
-    text = ""
-    for i in result.keys():
-        text += "{}: {}\n".format(i, result[i])
-    return text
+    
+    return result
 
 
 if __name__ == "__main__":
