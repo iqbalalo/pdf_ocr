@@ -50,7 +50,6 @@ def submit_pdf():
         return redirect(url_for("index"))
 
     # save to db
-    result = json.dumps(result).encode("utf8")
     res = db.create_history(lid=lid, parent_id=parent_id, result=result)
 
     if res:
