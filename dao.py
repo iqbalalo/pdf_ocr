@@ -35,8 +35,6 @@ class DAO:
     def create_history(self, lid, parent_id, result):
         sql = "INSERT INTO history VALUES ('{}', '{}', '{}')".format(lid, parent_id, result)
 
-        print(sql)
-
         try:
             self.db = self.connect()
             self.cursor = self.db.cursor()
