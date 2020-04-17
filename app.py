@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_cors import CORS
 from dao import DAO
 import requests
@@ -9,58 +9,57 @@ import base64
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__, instance_relative_config=True)
+app.secret_key = 'secret key'
 CORS(app)
-
 db = DAO()
-ocr_result = ""
 
 
 @app.route('/')
 def index():
-    global ocr_result
-
     # load history
     history = db.get_history()
-
-    return render_template("index.html", ocr_result=ocr_result, history=history)
+    return render_template("index.html", history=history)
 
 
 @app.route('/submit_pdf', methods=["POST"])
 def submit_pdf():
-    global ocr_result
     request.files["pdf"].save(basedir + "/test.pdf")
 
+    # call api to convert pdf to image
     result = convert_pdf_to_image(basedir + "/test.pdf")
 
-    if result is None:
-        ocr_result = "Invalid PDF!"
+    if "error_code" in result:
+        flash(result)
         return redirect(url_for("index"))
 
-    parent_id = result["parent_id"]
-    lid = result["lid"]
-    image = base64_to_image(result["image"][0])
+    parent_id = result.get("parent_id", None)
+    lid = result.get("lid", None)
 
-    if os.path.exists(image):
-        result = image_to_ocr(image)
+    # convert image base64 to image
+    img = result.get("image", None)
+    if img:
+        img = base64_to_image(img[0])
 
-    if not result:
-        ocr_result = "Invalid PDF to OCR Data!"
+    if img is not None and os.path.exists(img):
+        result = image_to_ocr(img)
+
+    if "error" in result or not result:
+        flash(result)
         return redirect(url_for("index"))
 
     # save to db
     res = db.create_history(lid=lid, parent_id=parent_id, result=result)
 
-    # load to ocr_result
     if res:
-        ocr_result = {"lid": lid, "parent_id": parent_id, "result": result}
+        flash({"lid": lid, "parent_id": parent_id, "result": result})
     else:
-        ocr_result = "OCR Data could not saved!"
+        flash("OCR Data could not saved!")
 
     return redirect(url_for("index"))
 
 
 def convert_pdf_to_image(pdf):
-    file = {'file': open(basedir + "/" + pdf, 'rb')}
+    file = {'file': open(pdf, 'rb')}
     url = "https://api-sandbox.fastaccounting.jp/v1.3/convert_to_jpg"
 
     result = requests.post(url, files=file)

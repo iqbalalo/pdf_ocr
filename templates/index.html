@@ -15,7 +15,11 @@
 </form>
 <h4>Result</h4>
 <div style="margin-top: 1em; margin-bottom: 2em; border: .5px solid; padding: 1em;">
-    {{ocr_result}}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for message in messages %}
+                {{ message }}
+        {% endfor %}
+    {% endwith %}
 </div>
 
 <h4>History</h4>

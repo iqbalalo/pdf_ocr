@@ -15,7 +15,7 @@ class DAO:
                 port="3306",
                 database="ocr_log",
                 user="root",
-                passwd="1234"
+                passwd="123"
             )
         except Exception as e:
             print(e)
